@@ -1,0 +1,10 @@
+{
+	"sfm_file_name": "data/sfm_2_3D.json",
+	"points_file_name": "data/points_2_3D.pp",
+	"actually_markers_list": {"0": [5.2, 0, 5.2], "1": [-5.2, 0.6, 5.2], "2": [5.2, 1.8, -5.2], "3": [-5.2, 0, -5.2]},
+	"actually_param_list": {"length": [42, [["A", "D"], ["B", "C"], ["E", "K"], ["G", "F"]]],
+		"width": [42, [["A", "B"], ["D", "C"], ["E", "G"], ["K", "F"]]],
+		 "front_diag": [59.3969696197, [["A", "C"], ["B", "D"], ["E", "F"], ["K", "G"]]],
+		 "interior_diag": [63.3403504885, [["A", "F"], ["E", "C"], ["G", "D"], ["B", "K"]]],
+		 "lateral_diag": [47.4130783645, [["A", "K"], ["C", "G"], ["K", "C"], ["A", "G"]]]}
+}

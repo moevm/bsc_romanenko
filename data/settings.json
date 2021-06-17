@@ -1,5 +1,0 @@
-{
-  "sfm_file_name": "data/sfm_3D.json",
-  "points_file_name": "data/points_3D.pp",
-  "actually_markers_list": {"0": [3.25, 0, 3.25], "1": [-3.25, 0.63, 3.25], "2": [3.25, 0.6, -3.25], "3": [-3.25, 1.1, -3.25]}
-}

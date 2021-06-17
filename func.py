@@ -2,25 +2,18 @@ import math
 import numpy as np
 import json
 
-
 def dist(p1, p2):
     return math.sqrt((p1[0]-p2[0])**2+(p1[1]-p2[1])**2+(p1[2]-p2[2])**2)
 
-
-def get_points(actually_markers_list, sfm_file_name):
-    with open(sfm_file_name, 'r') as sfm:
-        data = sfm.read()
-
-    obj = json.loads(data)
+def get_points(actually_markers_list, sfm_data):
 
     # получаем список координат маркеров
     model_markers_list = {}
 
-    for landmark in obj["structure"]:
+    for landmark in sfm_data["structure"]:
         if landmark["descType"] == "cctag3":
             # color[0] - id cctag3 маркера
             model_markers_list[landmark["color"][0]] = list(map(float, landmark["X"]))
-
 
     actually_markers_list = sorted(actually_markers_list.items(), key=lambda x: x[0])
     model_markers_list = sorted(model_markers_list.items(), key=lambda x: x[0])
@@ -30,12 +23,11 @@ def get_points(actually_markers_list, sfm_file_name):
             return True
         return len(elements) == elements.count(elements[0])
 
-
-
     # точки до и после преобразования отсортированные по порядку
     out_point = list(dict(actually_markers_list).values())
     in_point = list(dict(model_markers_list).values())
 
+    # проверка на одинаковый параметр одной из координат у точек
     for i in range(len(in_point[0]) - 1):
         if(all_the_same([item[i] for item in out_point])):
             for point in in_point:
@@ -47,8 +39,6 @@ def get_points(actually_markers_list, sfm_file_name):
     out_point = out_point[:len(in_point[0])+1]
 
     return in_point, out_point
-
-
 
 def calculate_affine(in_point, out_point):
     # количество точек
@@ -74,7 +64,6 @@ def calculate_affine(in_point, out_point):
 
 
 def affine_point(affine_Matrix,affine_Vector,point):
-
     if (len(point) != len(affine_Vector)):
         point2d = np.dot(affine_Matrix, [point[0],point[2]]) + affine_Vector
         return [point2d[0], point[1], point2d[1]]
@@ -89,3 +78,15 @@ def calculate_error(act_param, params):
     s = math.sqrt(sum(params)/(param_len*(param_len-1)))
     delta_x = 3.2 * s
     return (delta_x/act_param)*100
+
+
+def affine_sfm_file(sfm_data, affine_Matrix, affine_Vector):
+    new_landmark_list = []
+    for landmark in sfm_data["structure"]:
+       new_landmark = landmark;
+       new_landmark["X"] = list(map(str, np.round(affine_point(affine_Matrix, affine_Vector, list(map(float, landmark["X"]))), 6)))
+       new_landmark_list.append(new_landmark)
+    sfm_data["structure"] = new_landmark_list
+    with open('res.json', 'w') as outfile:
+        json.dump(sfm_data, outfile)
+    return
