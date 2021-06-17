@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import func
 
 # чтение файла настроек
-with open("data/settings_2_3D.json", 'r') as settings:
+with open("data/settings_1_3D.json", 'r') as settings:
     settings_param = settings.read()
 
 # преобразуем json строку в объект
